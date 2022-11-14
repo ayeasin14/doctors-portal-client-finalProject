@@ -1,13 +1,39 @@
-import React from 'react';
+import toast from 'react-hot-toast';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider';
+
 
 const SignUp = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser, updateUser } = useContext(AuthContext);
+    const [signUpError, setSignUpError] = useState('');
+
 
     const handleSignUp = (data) => {
         console.log(data);
+
+        setSignUpError('')
+        createUser(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                toast('User created succesfully');
+
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.log(err))
+
+            })
+            .catch(error => {
+                console.error(error)
+                setSignUpError(error.message);
+            })
     }
 
     return (
@@ -44,9 +70,12 @@ const SignUp = () => {
                         })}
                             type="password"
                             className="input input-bordered w-full max-w-xs" />
+
                         {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
                     </div>
-
+                    <div>
+                        {signUpError && <p className='text-red-600 my-3'>{signUpError}</p>}
+                    </div>
                     <input className='w-full my-6 btn btn-accent' value="Sign Up" type="submit" />
                 </form>
                 <p>Already have an account ? <Link to='/login' className='text-secondary'>Please Login</Link></p>
