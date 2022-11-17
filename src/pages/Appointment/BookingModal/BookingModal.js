@@ -11,13 +11,13 @@ const BookingModal = ({ treatment, selectedData, setTreatment, refetch }) => {
     const handleBooking = event => {
         event.preventDefault();
         const form = event.target;
+        const slot = form.slot.value;
         const name = form.name.value;
         const email = form.email.value;
-        const slot = form.slot.value;
         const phone = form.phone.value;
 
         const booking = {
-            appointmentdData: date,
+            appointmentData: date,
             treatment: treatmentName,
             patient: name,
             slot,
@@ -67,7 +67,7 @@ const BookingModal = ({ treatment, selectedData, setTreatment, refetch }) => {
 
                         <input name='name' type="text" placeholder="Your Name" disabled defaultValue={user?.displayName} className="input w-full input-bordered" required />
                         <input name='email' disabled defaultValue={user?.email} type="email" placeholder="Email Address" className="input w-full input-bordered" required />
-                        <input name='phone' type="text" placeholder="Phone Number" className="input w-full input-bordered " required />
+                        <input name='phone' type="text" placeholder="Phone Number" className="input w-full input-bordered " />
                         <input type="submit" className='btn btn-accent w-full' value="Submit" />
                     </form>
                 </div>
